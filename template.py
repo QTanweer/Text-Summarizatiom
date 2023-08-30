@@ -25,7 +25,7 @@ list_of_files = [
     "config/config.yaml",
     "params.yaml",
     "app.py",
-    "main.py",
+    "main.py", 
     "Dockerfile",
     "requirements.txt",
     "setup.py",
