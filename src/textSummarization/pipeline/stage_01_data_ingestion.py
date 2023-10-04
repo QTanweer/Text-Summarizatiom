@@ -1,9 +1,9 @@
 """
 Data Ingestion Pipeline Stage 01
 """
-from cnnClassifier.config.configuration import ConfigurationManager
-from cnnClassifier.components.data_ingestion import DataIngestion
-from cnnClassifier import logger
+from textSummarization.config.configuration import ConfigurationManager
+from textSummarization.components.data_ingestion import DataIngestion
+from textSummarization.logging import logger
 
 STAGE_NAME = "Data Ingestion Stage"
 

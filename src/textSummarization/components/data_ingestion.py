@@ -5,9 +5,9 @@ Data Ingestion Component
 import os
 import urllib.request as request
 from zipfile import ZipFile
-from cnnClassifier import logger
-from cnnClassifier.utils.common import get_size
-from cnnClassifier.entity.config_entity import DataIngestionConfig
+from textSummarization.logging import logger
+from textSummarization.utils.common import get_size
+from textSummarization.entity.config_entity import DataIngestionConfig
 
 class DataIngestion:
     """
