@@ -16,51 +16,64 @@ from textSummarization.logging import logger
 
 @ensure_annotations
 def read_yaml(path_to_yaml: Path) -> ConfigBox:
-    """Reads yaml file
+    """
+    Reads a yaml file and returns a ConfigBox object
 
     Args:
-        path_to_yaml (str): path like input
+        path_to_yaml (Path): path like input
 
     Raises:
-        BoxValueError: If yaml file is empty
+        ValueError: if yaml file is empty
         e: empty yaml file
 
     Returns:
         ConfigBox: ConfigBox object
     """
+
+    # print(f"Inside read_yaml func before try clase:{path_to_yaml},and type: {type(path_to_yaml)}")
+
+    # print(os.path.exists(path_to_yaml))
+
     try:
-        with open(path_to_yaml, encoding='utf-8') as yaml_file:
+        # print(f"Inside read_yaml function's try: {path_to_yaml}, and type: {type(path_to_yaml)}")
+        with open(path_to_yaml, "r", encoding='utf-8') as yaml_file:
             content = yaml.safe_load(yaml_file)
-            logger.info("Loaded yaml file: %s", path_to_yaml)
-            return ConfigBox(content)
+            logger.info("yaml file: %s loaded successfully", path_to_yaml)
+            config = ConfigBox(content)
+            return config
     except BoxValueError as exc:
-        raise BoxValueError("Empty yaml file") from exc
-    except Exception as error:
-        raise error
+        print(f"Inside read_yaml function's except: {path_to_yaml} is empty")
+        raise ValueError('Empty yaml file') from exc
+    except Exception as ex:
+        raise ex
 
 
-@ensure_annotations
-def create_directories(path_to_directories: list, verbose = True) :
-    """Create list of directories
-
-    Args:
-        path_to_directories (list): list of path of directories
+# @ensure_annotations
+def create_directories(path_to_directories: list, verbose=True):
     """
-    for path in path_to_directories:
-        os.makedirs(path, exist_ok=True)
-        if verbose:
-            logger.info("Created directory: %s", path)
-
-
-@ensure_annotations
-def get_size(path: Path) -> str:
-    """Get size of file in KB
+    Creates directories
 
     Args:
-        path (Path): path of file
+        path_to_directories (list): list of directories to create
+    """
+    for dir_path in path_to_directories:
+        os.makedirs(dir_path, exist_ok=True)
+        logger.info("directory: %s created successfully", dir_path)
+        if verbose:
+            logger.info("directory: %s created successfully", dir_path)
+
+
+def get_size(path: Path):
+    """
+    Gets size of a file in KB
+
+    Args:
+        path (Path): path like input to file
 
     Returns:
-        str: size of KB
+        Any: size of file
     """
+    size = f"~ {round(os.path.getsize(path) / 1024, 2)} KB"
+    logger.info("file: %s size: %s", path, size)
+    return size
 
-    return f"~{(os.path.getsize(path)/1024):.2f} KB"
