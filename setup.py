@@ -6,13 +6,12 @@ with open("README.md", "r", encoding='utf-8') as fh:
 
 __version__ = '0.0.0'
 
-REPO_NAME = 'textSummarization'
-AUTHOR_NAME = 'QamarT'
+REPO_NAME = 'Text-Summarization'
+AUTHOR_NAME = 'QTanweer'
 SRC_REPO = 'textSummarization'
 SRC_PATH = 'src'
 AUTHOR_EMAIL = 'qtanweer.mts41ceme@gmail.com'
-
-
+ 
 
 setuptools.setup(
     name=REPO_NAME,
