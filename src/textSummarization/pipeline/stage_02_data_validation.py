@@ -1,37 +1,38 @@
+"""	
+This module is responsible for validating the data.
 """
-Data Ingestion Pipeline Stage 01
-"""
+
 from textSummarization.config.configuration import ConfigurationManager
-from textSummarization.components.data_ingestion import DataIngestion
+from textSummarization.components.data_validation import DataValidation
 from textSummarization.logging import logger
 
-STAGE_NAME = "Data Ingestion Stage"
 
-class DataIngestionPipeline:
+STAGE_NAME = "Data Validation Stage"
+
+class DataValidationPipeline:
     """
-    Data Ingestion Pipeline Stage 01
+    Data Validation Pipeline Stage 02
     """
     def __init__(self):
         pass
 
     def main(self):
         '''
-        Main method for Data Ingestion Pipeline Stage 01
+        Main method for Data Validation Pipeline Stage 02
         '''
         config = ConfigurationManager()
-        data_ingestion_config = config.get_data_ingestion_config()
-        data_ingestion = DataIngestion(config = data_ingestion_config)
-        data_ingestion.download_file()
-        data_ingestion.extract_zip_file()
+        data_validation_config = config.get_data_validation_config()
+        data_validation = DataValidation(config=data_validation_config)
+        data_validation.validate_all_files_exist()
+
 
 
 if __name__ == "__main__":
     try:
         logger.info(">>>>>Stage: %s started<<<<<" , STAGE_NAME)
-        obj = DataIngestionPipeline()
+        obj = DataValidationTrainingPipeline()
         obj.main()
         logger.info(">>>>>Stage: %s completed<<<<<" , STAGE_NAME)
     except Exception as ex:
         logger.error(ex, exc_info = True)
         raise ex
-    

@@ -15,19 +15,14 @@ class DataIngestionConfig:
     local_data_file: Path
     unzip_dir: Path
 
-# @dataclass(frozen=True)
-# class PrepareBaseModelConfig:
-#     """
-#     PrepareBaseModelConfig Entity class
-#     """
-#     root_dir: Path
-#     base_model_path: Path
-#     updated_base_model_path: Path
-#     params_image_size: list
-#     params_include_top: bool
-#     params_weights: str
-#     params_classes: int
-#     params_learning_rate: float
+@dataclass(frozen=True)
+class DataValidationConfig:
+    """
+    DataValidationConfig Entity class
+    """
+    root_dir: Path
+    status_file: str
+    all_required_files: list
 
 # @dataclass(frozen=True)
 # class PrepareCallbacksConfig:

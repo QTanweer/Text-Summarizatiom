@@ -5,7 +5,9 @@ Configuration Manager class
 from pathlib import Path
 from textSummarization.constants import CONFIG_FILE_PATH, PARAMS_FILE_PATH
 from textSummarization.utils.common import read_yaml, create_directories
-from textSummarization.entity.config_entity import DataIngestionConfig
+from textSummarization.entity.config_entity import (DataIngestionConfig,
+                                                    DataValidationConfig
+                                                )
                                                 # PrepareBaseModelConfig,
                                                 # PrepareCallbacksConfig,
                                                 # TrainingConfig,
@@ -45,21 +47,19 @@ class ConfigurationManager:
             local_data_file = Path(config.local_data_file),
             unzip_dir = config.unzip_dir
         )
-    # def get_prepare_base_model_config(self) -> PrepareBaseModelConfig:
-    #     """
-    #     Returns PrepareBaseModelConfig object
-    #     """
-    #     create_directories([self.config.prepare_base_model.root_dir])
-    #     return PrepareBaseModelConfig(
-    #         root_dir = Path(self.config.prepare_base_model.root_dir),
-    #         base_model_path = Path(self.config.prepare_base_model.base_model_path),
-    #         updated_base_model_path= Path(self.config.prepare_base_model.updated_base_model_path),
-    #         params_image_size = self.params.IMAGE_SIZE,
-    #         params_include_top = self.params.INCLUDE_TOP,
-    #         params_weights = self.params.WEIGHTS,
-    #         params_classes = self.params.CLASSES,
-    #         params_learning_rate = self.params.LEARNING_RATE
-    #     )
+
+
+    def get_data_validation_config(self) -> DataValidationConfig:
+        """
+        Returns DataValidationConfig object
+        """
+        create_directories([self.config.data_validation.root_dir])
+        return DataValidationConfig(
+            root_dir = Path(self.config.data_validation.root_dir),
+            status_file=self.config.data_validation.STATUS_FILE,
+            all_required_files=self.config.data_validation.ALL_REQUIRED_FILES
+        )
+    
 
     # def get_prepare_callback_config(self) -> PrepareCallbacksConfig:
     #     """
