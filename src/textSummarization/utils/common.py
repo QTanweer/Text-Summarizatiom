@@ -59,8 +59,6 @@ def create_directories(path_to_directories: list, verbose=True):
     for dir_path in path_to_directories:
         os.makedirs(dir_path, exist_ok=True)
         logger.info("directory: %s created successfully", dir_path)
-        if verbose:
-            logger.info("directory: %s created successfully", dir_path)
 
 
 def get_size(path: Path):
