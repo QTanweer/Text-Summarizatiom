@@ -50,7 +50,7 @@ class DataValidationConfig:
 
 # @dataclass(frozen=True)
 # class EvaluationConfig:
-#     """	
+#     """
 #     EvaluationConfig Entity class
 #     """
 #     path_of_model: Path
