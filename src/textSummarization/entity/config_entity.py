@@ -24,14 +24,17 @@ class DataValidationConfig:
     status_file: str
     all_required_files: list
 
-# @dataclass(frozen=True)
-# class PrepareCallbacksConfig:
-#     """
-#     PrepareCallbacksConfig Entity class
-#     """
-#     root_dir: Path
-#     tensorboard_root_log_dir: Path
-#     checkpoint_model_filepath: Path
+
+@dataclass(frozen=True)
+class DataTransformationConfig:
+    """
+    DataTransformationConfig Entity class
+    """
+    root_dir: Path
+    data_path: Path
+    tokenizer_name: Path
+
+
 
 # @dataclass(frozen=True)
 # class TrainingConfig:

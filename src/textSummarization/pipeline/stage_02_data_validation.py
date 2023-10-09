@@ -26,11 +26,10 @@ class DataValidationPipeline:
         data_validation.validate_all_files_exist()
 
 
-
 if __name__ == "__main__":
     try:
         logger.info(">>>>>Stage: %s started<<<<<" , STAGE_NAME)
-        obj = DataValidationTrainingPipeline()
+        obj = DataValidationPipeline()
         obj.main()
         logger.info(">>>>>Stage: %s completed<<<<<" , STAGE_NAME)
     except Exception as ex:

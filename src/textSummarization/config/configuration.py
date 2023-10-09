@@ -6,7 +6,8 @@ from pathlib import Path
 from textSummarization.constants import CONFIG_FILE_PATH, PARAMS_FILE_PATH
 from textSummarization.utils.common import read_yaml, create_directories
 from textSummarization.entity.config_entity import (DataIngestionConfig,
-                                                    DataValidationConfig
+                                                    DataValidationConfig,
+                                                    DataTransformationConfig
                                                     )
 # PrepareBaseModelConfig,
 # PrepareCallbacksConfig,
@@ -59,18 +60,20 @@ class ConfigurationManager:
             all_required_files=self.config.data_validation.ALL_REQUIRED_FILES
         )
 
-    # def get_prepare_callback_config(self) -> PrepareCallbacksConfig:
-    #     """
-    #     Returns PrepareCallbacksConfig object
-    #     """
-    #     create_directories([Path(self.config.prepare_callbacks.root_dir),
-    #                         Path(self.config.prepare_callbacks.tensorboard_root_log_dir),
-    #                         Path(self.config.prepare_callbacks.checkpoint_model_filepath)])
-    #     return PrepareCallbacksConfig(
-    #         root_dir = Path(self.config.prepare_callbacks.root_dir),
-    #         tensorboard_root_log_dir = Path(self.config.prepare_callbacks.tensorboard_root_log_dir),
-    #         checkpoint_model_filepath= Path(self.config.prepare_callbacks.checkpoint_model_filepath)
-    #     )
+
+    def get_data_transformation_config(self) -> DataTransformationConfig:
+        """
+        Returns DataTransformationConfig object
+        """
+        config = self.config.data_transformation
+
+        create_directories([Path(config.root_dir)])
+
+        return DataTransformationConfig(
+            root_dir = Path(config.root_dir),
+            data_path= Path(config.data_path),
+            tokenizer_name= Path(config.tokenizer_name)
+            )
 
     # def get_training_config(self) -> TrainingConfig:
     #     """
