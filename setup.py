@@ -11,7 +11,8 @@ AUTHOR_NAME = 'QTanweer'
 SRC_REPO = 'textSummarization'
 SRC_PATH = 'src'
 AUTHOR_EMAIL = 'qtanweer.mts41ceme@gmail.com'
- 
+
+
 
 setuptools.setup(
     name=REPO_NAME,
