@@ -12,3 +12,5 @@ End-to-end NLP project deployed with CI/CD and MLops Pipeline
 7. Update the pipeline ✅ 
 8. Update the main.py ✅ 
 9. Update the app.py
+
+updated the readme
