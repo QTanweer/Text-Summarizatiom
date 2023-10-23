@@ -36,19 +36,22 @@ class DataTransformationConfig:
 
 
 
-# @dataclass(frozen=True)
-# class TrainingConfig:
-#     """
-#     TrainingConfig Entity class
-#     """
-#     root_dir: Path
-#     trained_model_path: Path
-#     updated_base_model_path: Path
-#     training_data: Path
-#     params_epochs: int
-#     params_batch_size: int
-#     params_is_augmentation: bool
-#     params_image_size: list
+@dataclass(frozen=True)
+class TrainingConfig:
+    root_dir: Path
+    data_path: Path
+    model_ckpt: Path
+    num_train_epochs: int
+    warmup_steps: int
+    per_device_train_batch_size: int
+    weight_decay: float
+    logging_steps: int
+    evaluation_strateg: str
+    eval_steps: int 
+    save_steps: float
+    gradient_accumulation_steps: int
+    
+
 
 
 # @dataclass(frozen=True)

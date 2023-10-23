@@ -74,21 +74,33 @@ class ConfigurationManager:
             data_path= Path(config.data_path),
             tokenizer_name= Path(config.tokenizer_name)
             )
+    
+    
+    def get_training_config(self) -> TrainingConfig:
+        training = self.config.model_trainer
+        params = self.params.TrainingArguments
 
-    # def get_training_config(self) -> TrainingConfig:
-    #     """
-    #     Returns TrainingConfig object
-    #     """
-    #     training = self.config.training
-    #     prepare_base_model = self.config.prepare_base_model
-    #     params = self.params
-    #     training_data = self.config.data_ingestion.unzip_dir
-    #     create_directories([Path(training.root_dir)])
+        create_directories([Path(training.root_dir)])
 
-    #     training_config = TrainingConfig(
-    #         root_dir=Path(training.root_dir),
-    #         trained_model_path=Path(training.trained_model_path),
-    #         updated_base_model_path=str(prepare_base_model.updated_base_model_path),
+        training_config = TrainingConfig(
+            root_dir=Path(training.root_dir),
+            data_path= Path(training.data_path),
+            model_ckpt=Path(training.model_ckpt),
+            num_train_epochs=params.num_train_epochs,
+            warmup_steps=params.warmup_steps,
+            per_device_train_batch_size=params.per_device_train_batch_size,
+            weight_decay=params.weight_decay,
+            logging_steps=params.logging_steps,
+            evaluation_strateg=params.evaluation_strategy,
+            eval_steps=params.eval_steps,
+            save_steps=float(params.save_steps),
+            gradient_accumulation_steps=params.gradient_accumulation_steps
+        )
+        return training_config
+    
+    
+    
+    #updated_base_model_path=str(prepare_base_model.updated_base_model_path),
     #         training_data=Path(training_data),
     #         params_epochs=params.EPOCHS,
     #         params_batch_size=params.BATCH_SIZE,
