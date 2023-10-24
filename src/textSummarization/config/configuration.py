@@ -7,7 +7,9 @@ from textSummarization.constants import CONFIG_FILE_PATH, PARAMS_FILE_PATH
 from textSummarization.utils.common import read_yaml, create_directories
 from textSummarization.entity.config_entity import (DataIngestionConfig,
                                                     DataValidationConfig,
-                                                    DataTransformationConfig
+                                                    DataTransformationConfig,
+                                                    TrainingConfig,
+                                                    EvaluationConfig
                                                     )
 # PrepareBaseModelConfig,
 # PrepareCallbacksConfig,
@@ -98,27 +100,13 @@ class ConfigurationManager:
         )
         return training_config
     
-    
-    
-    #updated_base_model_path=str(prepare_base_model.updated_base_model_path),
-    #         training_data=Path(training_data),
-    #         params_epochs=params.EPOCHS,
-    #         params_batch_size=params.BATCH_SIZE,
-    #         params_is_augmentation=params.AUGMENTATION,
-    #         params_image_size=params.IMAGE_SIZE
-    #     )
 
-    #     return training_config
-
-    # def get_validation_config(self) -> EvaluationConfig:
-    #     """
-    #     Returns EvaluationConfig object
-    #     """
-    #     eval_config = EvaluationConfig(
-    #         path_of_model=Path("artifacts/training/model.keras"),
-    #         training_data=Path("artifacts/data_ingestion/Chicken-Disease-Dataset"),
-    #         params_batch_size=self.params.BATCH_SIZE,
-    #         params_image_size=self.params.IMAGE_SIZE,
-    #         all_params=self.params
-    #     )
-    #     return eval_config
+    def get_evaluation_config(self) -> EvaluationConfig:
+        eval_config = EvaluationConfig(
+            root_dir=Path(self.config.model_evaluation.root_dir),
+            data_path=Path(self.config.model_evaluation.data_path),
+            model_path=Path(self.config.model_evaluation.model_path),
+            tokenizer_path=Path(self.config.model_evaluation.tokenizer_path),
+            metric_file_name=Path(self.config.model_evaluation.metric_file_name)
+        )
+        return eval_config

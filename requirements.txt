@@ -1,6 +1,7 @@
 numpy
 Transformers
 Transformers[sentencepiece]
+accelerate
 datasets
 sacrebleu
 rouge_score
@@ -14,6 +15,7 @@ matplotlib
 notebook
 boto3
 python-box
+evaluate
 ensure
 fastapi
 uvicorn

@@ -54,13 +54,11 @@ class TrainingConfig:
 
 
 
-# @dataclass(frozen=True)
-# class EvaluationConfig:
-#     """
-#     EvaluationConfig Entity class
-#     """
-#     path_of_model: Path
-#     training_data: Path
-#     params_batch_size: int
-#     params_image_size: list
-#     all_params: dict
+@dataclass(frozen=True)
+class EvaluationConfig:
+    root_dir: Path
+    data_path: Path
+    model_path: Path
+    tokenizer_path: Path
+    metric_file_name: Path
+    

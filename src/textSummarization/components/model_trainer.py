@@ -3,6 +3,7 @@ from transformers import DataCollatorForSeq2Seq
 from transformers import AutoModelForSeq2SeqLM, AutoTokenizer
 from datasets import load_dataset, load_from_disk
 import torch
+from textSummarization.entity.config_entity import TrainingConfig
 
 class ModelTrainer():
     def __init__(self, config: TrainingConfig):
@@ -40,7 +41,7 @@ class ModelTrainer():
             model=model_pegasus,
             args=training_args,
             tokenizer=tokenizer,
-            train_dataset=dataset_samsum_pt["train"],
+            train_dataset=dataset_samsum_pt["test"],
             eval_dataset=dataset_samsum_pt["validation"],
             data_collator=seq2seq_data_collator
         )

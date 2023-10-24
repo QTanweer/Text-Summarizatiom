@@ -3,7 +3,7 @@ Stage 04: Model Training
 """
 from textSummarization.config.configuration import ConfigurationManager
 from textSummarization.components.model_trainer import ModelTrainer
-from textSummarization import logger
+from textSummarization.logging import logger
 
 STAGE_NAME = "Model Training"
 

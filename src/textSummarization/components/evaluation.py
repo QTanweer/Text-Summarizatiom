@@ -1,67 +1,78 @@
-"""	
+"""
 Evaluation Component
 """
-from pathlib import Path
-import tensorflow as tf
-from cnnClassifier.entity.config_entity import EvaluationConfig
-from cnnClassifier.utils.common import save_json
+from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+from datasets import load_from_disk, load_dataset
+import torch
+import pandas as pd
+from tqdm import tqdm
+import evaluate
+from textSummarization.config.configuration import EvaluationConfig
+
 
 
 class Evaluation:
-    """
-    Evaluation Component
-    """
     def __init__(self, config: EvaluationConfig):
         self.config = config
-        self.score = None
-        self.valid_generator = None
-
-    def _valid_generator (self):
-
-        datagenerator_kwargs = dict(
-            rescale=1./255,
-            validation_split=.30
+        
+        
+    def generate_batch_sized_chunks(self, list_of_elements, batch_size):
+        
+        
+        for i in range(0, len(list_of_elements), batch_size):
+            yield list_of_elements[i:i+batch_size]
+    
+    
+    def calculate_metric_on_test_ds(self, dataset, metric, model, tokenizer, device,
+                                batch_size = 16,
+                                column_text = 'article',
+                                column_summary = 'highlights'):
+        
+        article_batches = list(self.generate_batch_sized_chunks(dataset[column_text], batch_size))
+        target_batches = list(self.generate_batch_sized_chunks(dataset[column_summary], batch_size))
+        
+        for article_batch, target in tqdm(zip(article_batches, target_batches),
+                                          total = len(article_batches)):
+            inputs = tokenizer(article_batch, truncation = True, padding = "max_length",
+                         max_length = 1024, return_tensors="pt")
+            summaries = model.generate(
+                input_ids = inputs['input_ids'].to(device),
+                attention_mask = inputs['attention_mask'].to(device),
+                length_penalty = 0.8, num_beams = 4, max_length = 128
+            )
+            
+            # paramter for penalty ensures that ............
+            # finally, we decode the generated texts,
+            # replace the token and add the decoded texts with the references to the metric
+            
+            decoded_summaries = [tokenizer.decode(s, skip_special_tokens = True,
+                                                  clean_up_tokenization_spaces = True) for s in summaries]
+            
+            decoded_summaries = [d.replace("", " ") for d in decoded_summaries]
+            metric.add_batch(predictions = decoded_summaries, references = target)
+            
+        score = metric.compute()
+        return score
+    
+    
+    def evaluate(self):
+        device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        
+        tokenizer = AutoTokenizer.from_pretrained(self.config.tokenizer_path)
+        model_pegasus = AutoModelForSeq2SeqLM.from_pretrained(self.config.model_path).to(device)
+        
+        # loading the dataset
+        
+        dataset_samsum_pt =  load_from_disk(self.config.data_path)
+        
+        rouge_names = ["rouge1", "rouge2", "rougeL", "rougeLsum"]
+        rouge_metric = evaluate.load('rouge')
+        
+        score =  self.calculate_metric_on_test_ds(
+            dataset_samsum_pt['test'][0:10], rouge_metric, model_pegasus, tokenizer,
+            batch_size = 2, column_text = 'dialogue', column_summary = 'summary', device = device
         )
-
-        dataflow_kwargs = dict(
-            target_size=self.config.params_image_size[:-1],
-            batch_size=self.config.params_batch_size,
-            interpolation="bilinear"
-        )
-
-        valid_datagenerator = tf.keras.preprocessing.image.ImageDataGenerator(
-            **datagenerator_kwargs
-        )
-
-        self.valid_generator = valid_datagenerator.flow_from_directory(
-            directory=self.config.training_data,
-            subset="validation",
-            shuffle=False,
-            **dataflow_kwargs
-        )
-
-    @staticmethod
-    def load_model(path_of_model : Path):
-        """
-        Loads the model
-        """
-
-        return tf.keras.models.load_model(path_of_model)
-
-    def evaluation(self):
-        """
-        Evaluates the model
-        """
-        model = self.load_model(self.config.path_of_model)
-        self._valid_generator()
-        self.score = model.evaluate(self.valid_generator, verbose=1)
-
-    def save_score(self):
-        """
-        Saves the score
-        """
-        scores = {
-            "loss" : self.score[0],
-            "accuracy" : self.score[1]
-            }
-        save_json(path=Path("scores.json"), data=scores)
+        print(score)
+        rouge_dict  = dict((rn, score[rn]) for rn in rouge_names)
+        df = pd.DataFrame(rouge_dict, index = [f"pegasus"])
+        df.to_csv(self.config.metric_file_name)

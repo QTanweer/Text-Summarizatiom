@@ -1,16 +1,16 @@
 """
 Evaluation Pipeline Stage 04
 """
-from cnnClassifier.config.configuration import ConfigurationManager
-from cnnClassifier.components.evaluation import Evaluation
-from cnnClassifier import logger
+from textSummarization.config.configuration import ConfigurationManager
+from textSummarization.components.evaluation import Evaluation
+from textSummarization.logging import logger
 
 STAGE_NAME = "Evaluation Stage"
 
 
 class EvaluationPipeline:
     """
-    Evaluation Pipeline Stage 04
+    Evaluation Pipeline Stage 05
     """
     def __init__(self) -> None:
         pass
@@ -20,10 +20,9 @@ class EvaluationPipeline:
         Main method for Evaluation Pipeline Stage 04
         '''
         config = ConfigurationManager()
-        evaluation_config = config.get_validation_config()
+        evaluation_config = config.get_evaluation_config()
         evaluation = Evaluation(config = evaluation_config)
-        evaluation.evaluation()
-        evaluation.save_score()
+        evaluation.evaluate()
 
 
 if __name__ == "__main__":
