@@ -11,10 +11,6 @@ from textSummarization.entity.config_entity import (DataIngestionConfig,
                                                     TrainingConfig,
                                                     EvaluationConfig
                                                     )
-# PrepareBaseModelConfig,
-# PrepareCallbacksConfig,
-# TrainingConfig,
-# EvaluationConfig)
 
 
 class ConfigurationManager:
@@ -102,6 +98,8 @@ class ConfigurationManager:
     
 
     def get_evaluation_config(self) -> EvaluationConfig:
+        
+        create_directories([self.config.model_evaluation.root_dir])
         eval_config = EvaluationConfig(
             root_dir=Path(self.config.model_evaluation.root_dir),
             data_path=Path(self.config.model_evaluation.data_path),
